@@ -23,29 +23,29 @@ sort.click()
 
 scroll_position = 0
 categories = ["Country", "Gold", "Silver", "Bronze", "Total"]
-all_data = [categories]  # Başlıkları ekleyerek başlıyoruz
+all_data = [categories]  
 
-for _ in range(86):  # Daha fazla döngü gerekiyorsa sayısını artırabilirsiniz
-    scroll_position += 400  # Sayfayı aşağı kaydır
+for _ in range(86):  
+    scroll_position += 400 
     driver.execute_script(f'window.scrollTo(0, {scroll_position})')
 
-    # Ülke adını almak için dinamik XPATH
-    country_row_number = 3 + _ * 8  # İlk ülkenin XPATH'i 3, sonra 11, 19, ...
+    
+    country_row_number = 3 + _ * 8 
     xpath_name = f'//*[@id="globalTracking"]/section/section[3]/div[1]/div[3]/div[{country_row_number}]/span'
     country_name = driver.find_element(By.XPATH, xpath_name).text
 
-    row_data = [country_name]  # Her satır için verileri saklayacak liste, ülke adı ile başlıyor
-    for i in range(4):  # 0'dan 3'e kadar döngü (Gold, Silver, Bronze, Total)
-        row_number = _ * 8 + i + 4  # Satır numarasını hesapla (ilk satır numarası 4 olacak şekilde)
+    row_data = [country_name]  
+    for i in range(4): 
+        row_number = _ * 8 + i + 4 
         xpath = f'//*[@id="globalTracking"]/section/section[3]/div[1]/div[3]/div[{row_number}]/span/span'
         value = driver.find_element(By.XPATH, xpath).text
         value = "0" if value == "-" else value
 
         row_data.append(value)
 
-    all_data.append(row_data)  # Satırdaki tüm verileri all_data'ya ekle
+    all_data.append(row_data)  
 
-# Create a DataFrame and save the results to a CSV file
+
 medals_df = pd.DataFrame(all_data).drop_duplicates()
 medals_df.to_csv("Rio2016", index=False)
 
