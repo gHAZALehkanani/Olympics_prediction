@@ -1,1 +1,1 @@
-## Olympics Web Screping by Python
+## Olympics Web Scraping by Python
